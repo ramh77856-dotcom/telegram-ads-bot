@@ -1,4 +1,5 @@
 import os
+import asyncio
 import logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -8,19 +9,18 @@ from telegram.ext import (
     ContextTypes,
 )
 
-# --------- LOGGING ---------
 logging.basicConfig(level=logging.INFO)
 
-# --------- CONFIG ----------
+# 🔐 Bot token from Railway Variables
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-if not BOT_TOKEN:
-    raise RuntimeError("BOT_TOKEN is missing in Railway Variables")
 
-CHANNEL_ID = -1003208376960  # <-- PUT YOUR REAL CHANNEL ID
+# ❗ CHANGE ONLY THIS
+CHANNEL_ID = -1003208376960  # <-- PUT YOUR REAL PRIVATE CHANNEL ID
+
+# Optional links
 CHANNEL_LINK = "https://t.me/+nC_p3xBtCFgxODc9"
 WEBSITE_LINK = "https://ustrade.fun/register"
 SUPPORT_LINK = "https://t.me/mrnoch21"
-# ---------------------------
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -63,32 +63,35 @@ async def verify_join(update: Update, context: ContextTypes.DEFAULT_TYPE):
         member = await context.bot.get_chat_member(CHANNEL_ID, query.from_user.id)
         if member.status in ("member", "administrator", "creator"):
             await query.message.reply_text(
-                "🎉 Verified successfully!\n\n"
-                "You can now explore our platform.",
+                "🎉 Verified successfully!",
                 reply_markup=InlineKeyboardMarkup([
                     [InlineKeyboardButton("🌐 Visit Website", url=WEBSITE_LINK)],
                     [InlineKeyboardButton("📞 Contact Support", url=SUPPORT_LINK)],
                 ])
             )
         else:
-            raise Exception
+            await query.message.reply_text("❌ Please join the channel first.")
     except Exception as e:
         logging.error(e)
         await query.message.reply_text(
-            "❌ You have not joined the channel yet.\n"
-            "Please join and click Verify again."
+            "❌ Verification failed. Make sure bot is admin in channel."
         )
 
 
-def main():
+async def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
+
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(language_handler, pattern="^lang_"))
     app.add_handler(CallbackQueryHandler(verify_join, pattern="^verify$"))
 
-    print("🤖 Bot running safely...")
-    app.run_polling(drop_pending_updates=True)
+    await app.initialize()
+    await app.start()
+    print("🤖 Bot started successfully")
+
+    # 🔒 Keeps Railway service alive
+    await asyncio.Event().wait()
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
