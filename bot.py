@@ -4,7 +4,7 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, ContextTypes
 
 BOT_TOKEN = "8298369135:AAFPLXLAGt5WyReC3xb-7CjUWTIK08iOGCk"
-CHANNEL_USERNAME = "@YOUR_PRIVATE_CHANNEL_USERNAME"
+CHANNEL_USERNAME = "-1003208376960"
 CHANNEL_LINK = "https://t.me/+nC_p3xBtCFgxODc9"
 WEBSITE_LINK = "https://ustrade.fun/register"
 SUPPORT_LINK = "https://t.me/mrnoch21"
