@@ -12,11 +12,11 @@ from telegram.ext import (
 logging.basicConfig(level=logging.INFO)
 
 # --------- CONFIG ----------
-BOT_TOKEN = os.getenv("8298369135:AAFPLXLAGt5WyReC3xb-7CjUWTIK08iOGCk")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise RuntimeError("BOT_TOKEN is missing in Railway Variables")
 
-CHANNEL_ID = -1003208376960 # <-- PUT YOUR REAL CHANNEL ID
+CHANNEL_ID = -1003208376960  # <-- PUT YOUR REAL CHANNEL ID
 CHANNEL_LINK = "https://t.me/+nC_p3xBtCFgxODc9"
 WEBSITE_LINK = "https://ustrade.fun/register"
 SUPPORT_LINK = "https://t.me/mrnoch21"
